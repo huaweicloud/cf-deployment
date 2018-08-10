@@ -18,7 +18,6 @@ disk_types:
   disk_size: 100000
 
 vm_extensions:
-vm_extensions:
 - name: 50GB_ephemeral_disk
   cloud_properties:
     disk_size: 50000
