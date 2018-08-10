@@ -1,0 +1,68 @@
+vm_types:
+- name: minimal
+  cloud_properties:
+    instance_type: s3.medium.4
+- name: small
+  cloud_properties:
+    instance_type: s3.large.2
+- name: small-highmem
+  cloud_properties:
+    instance_type: s3.large.2
+
+disk_types:
+- name: 5GB
+  disk_size: 5000
+- name: 10GB
+  disk_size: 10000
+- name: 100GB
+  disk_size: 100000
+
+vm_extensions:
+- name: 50GB_ephemeral_disk
+  cloud_properties:
+    disk_size: 50000
+- name: 100GB_ephemeral_disk
+  cloud_properties:
+    disk_size: 100000
+- name: cf-router-network-properties
+  cloud_properties:
+    security_groups: [cf, cf-lb-https-router]
+    loadbalancer_pools:
+      - name: cf-https-pool
+        port: 443
+- name: diego-ssh-proxy-network-properties
+  cloud_properties:
+    security_groups: [cf, cf-lb-ssh-diego-brain]
+    loadbalancer_pools:
+      - name: cf-ssh-pool
+        port: 2222
+- name: cf-tcp-router-network-properties
+  cloud_properties:
+    security_groups: [cf, cf-lb-tcp-router]
+    loadbalancer_pools:
+      - name: cf-tcp-pool-1024
+        port: 1024
+
+azs:
+- name: z1
+  cloud_properties:
+    availability_zone: ((availability_zone1))
+
+networks:
+- name: default
+  type: manual
+  subnets:
+  - az: z1
+    range: 10.0.16.0/20
+    reserved: [10.0.16.2-10.0.16.50]
+    gateway: 10.0.16.1
+    cloud_properties:
+      subnet_id: ((subnet_id1))
+      security_groups: [cf]
+
+compilation:
+  workers: 5
+  reuse_compilation_vms: true
+  vm_type: small-highmem
+  network: default
+  az: z1
