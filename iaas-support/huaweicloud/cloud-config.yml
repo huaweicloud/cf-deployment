@@ -18,6 +18,13 @@ disk_types:
   disk_size: 100000
 
 vm_extensions:
+vm_extensions:
+- name: 50GB_ephemeral_disk
+  cloud_properties:
+    disk_size: 50000
+- name: 100GB_ephemeral_disk
+  cloud_properties:
+    disk_size: 100000
 - name: cf-router-network-properties
   cloud_properties:
     security_groups: [cf, cf-lb-https-router]
